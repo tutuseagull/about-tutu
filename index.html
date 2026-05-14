@@ -107,32 +107,13 @@
       border-color: var(--color-navy-900);
     }
 
-    /* Snackbar */
-    .snackbar {
-      position: fixed;
-      bottom: var(--space-8);
-      left: 50%;
-      transform: translateX(-50%) translateY(12px);
-      background-color: var(--color-navy-800);
-      color: var(--color-cream-200);
-      font-size: var(--text-sm);
-      font-weight: var(--weight-ui);
-      padding: var(--space-3) var(--space-6);
-      border-radius: var(--radius-full);
-      box-shadow: var(--shadow-lg);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--duration-base) var(--ease-out),
-                  transform var(--duration-base) var(--ease-out);
-      z-index: var(--z-toast);
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-    }
-    .snackbar.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+    /* Email copied state */
+    .nav-email .icon-check,
+    .cta-btn .icon-check { display: none; }
+    .nav-email.copied .icon-email,
+    .cta-btn.copied .icon-email { display: none; }
+    .nav-email.copied .icon-check,
+    .cta-btn.copied .icon-check { display: block; flex-shrink: 0; }
 
     /* ================================================================
        HERO
@@ -294,7 +275,7 @@
       border-radius: var(--radius-xl);
       overflow: hidden;
       background-color: var(--surface-subtle);
-      border: 1px solid var(--border-default);
+      /* border: 1px solid var(--border-default); */
     }
 
     .row-image img {
@@ -475,9 +456,12 @@
       <div class="nav-right">
         <button class="nav-email" id="emailBtn"
                 aria-label="Copy email address">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0;">
+          <svg class="icon-email" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0;">
             <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
             <path d="M2 6l10 7 10-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg class="icon-check" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0;">
+            <path d="M4 12l5 5 11-11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <span class="email-label">Email me</span>
         </button>
@@ -601,12 +585,15 @@
   <!-- CLOSING CTA -->
   <section class="cta-section" aria-label="Get in touch">
     <div class="wrap">
-      <h2 class="cta-heading reveal">Email me.</h2>
+      <h2 class="cta-heading reveal">Got a problem worth solving?<br>Let's talk.</h2>
       <div class="cta-actions reveal">
         <button class="cta-btn cta-btn-dark" id="ctaEmailBtn">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0;">
+          <svg class="icon-email" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0;">
             <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
             <path d="M2 6l10 7 10-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg class="icon-check" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex-shrink:0;">
+            <path d="M4 12l5 5 11-11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <span class="cta-email-label">Email me</span>
         </button>
@@ -649,15 +636,6 @@
   </footer>
 
 
-  <!-- Snackbar -->
-  <div class="snackbar" id="snackbar" role="status" aria-live="polite">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path d="M3 8.5l3.5 3.5 6.5-7" stroke="currentColor" stroke-width="1.6"
-            stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    Email copied
-  </div>
-
   <script>
     // Scroll reveal
     const observer = new IntersectionObserver(
@@ -668,38 +646,35 @@
     );
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Email button — hover label swap + copy + snackbar
-    const btn   = document.getElementById('emailBtn');
-    const label = btn.querySelector('.email-label');
-    const snack = document.getElementById('snackbar');
     const EMAIL = 'yunwentu22@gmail.com';
-    let snackTimer;
 
-    btn.addEventListener('mouseenter', () => { label.textContent = 'Copy email'; });
-    btn.addEventListener('mouseleave', () => { label.textContent = 'Email me'; });
+    function setupEmailBtn(btnId, labelSelector, defaultLabel) {
+      const btn = document.getElementById(btnId);
+      const label = btn.querySelector(labelSelector);
+      let revertTimer;
 
-    btn.addEventListener('click', () => {
-      navigator.clipboard.writeText(EMAIL).then(() => {
-        clearTimeout(snackTimer);
-        snack.classList.add('show');
-        snackTimer = setTimeout(() => snack.classList.remove('show'), 2200);
+      btn.addEventListener('mouseenter', () => {
+        if (!btn.classList.contains('copied')) label.textContent = 'Copy email';
       });
-    });
-
-    // CTA email button
-    const ctaBtn   = document.getElementById('ctaEmailBtn');
-    const ctaLabel = ctaBtn.querySelector('.cta-email-label');
-
-    ctaBtn.addEventListener('mouseenter', () => { ctaLabel.textContent = 'Copy email'; });
-    ctaBtn.addEventListener('mouseleave', () => { ctaLabel.textContent = 'Email'; });
-
-    ctaBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(EMAIL).then(() => {
-        clearTimeout(snackTimer);
-        snack.classList.add('show');
-        snackTimer = setTimeout(() => snack.classList.remove('show'), 2200);
+      btn.addEventListener('mouseleave', () => {
+        if (!btn.classList.contains('copied')) label.textContent = defaultLabel;
       });
-    });
+
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(EMAIL).then(() => {
+          clearTimeout(revertTimer);
+          btn.classList.add('copied');
+          label.textContent = 'Copied';
+          revertTimer = setTimeout(() => {
+            btn.classList.remove('copied');
+            label.textContent = defaultLabel;
+          }, 3000);
+        });
+      });
+    }
+
+    setupEmailBtn('emailBtn', '.email-label', 'Email me');
+    setupEmailBtn('ctaEmailBtn', '.cta-email-label', 'Email me');
   </script>
 
 </body>
