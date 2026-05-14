@@ -1,0 +1,316 @@
+/* ============================================================
+   TUTU PORTFOLIO — Design Tokens
+   tokens.css · v2.0
+
+   Decisions locked in this version:
+   - Typography: Mulish Variable (single family, weight hierarchy)
+   - Background: warm cream #F5F0EB, no default grid
+   - Grid patterns: utility classes, use selectively on slides /
+     case study sections — not as a site-wide treatment
+   - Colors: secondary text + accent corrected to pass WCAG AA
+
+   How to use:
+   - Load font first in every HTML page:
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/mulish/index.css">
+   - Then import this file:
+     <link rel="stylesheet" href="/assets/styles/tokens.css">
+   - Reference tokens via var(--token-name) in your CSS
+   - Never hardcode colors, sizes, or fonts — always use tokens
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   COLOR — Brand Primitives
+   Raw color values. Don't use these directly in components —
+   use the semantic tokens below instead.
+   ------------------------------------------------------------ */
+:root {
+  --color-cream-100: #FAF6F1;
+  --color-cream-200: #F5F0EB;   /* ← main background */
+  --color-cream-300: #EDE6DC;
+
+  --color-navy-900:  #131928;
+  --color-navy-800:  #1C2442;   /* ← primary text       · 12.0:1 vs cream ✓ AAA */
+  --color-navy-700:  #2D3566;
+  --color-navy-600:  #3D4580;   /* ← subheadings        ·  6.9:1 vs cream ✓ AA  */
+  --color-navy-500:  #4E5A8E;   /* ← secondary text     ·  4.6:1 vs cream ✓ AA  */
+  --color-navy-400:  #4A5278;   /* ← body copy          ·  5.9:1 vs cream ✓ AA  */
+  --color-navy-200:  #B0B8D4;   /* ← muted / decorative · decorative only        */
+  --color-navy-100:  #E0E3EF;
+
+  --color-violet-700: #3730A3;
+  --color-violet-600: #4840C8;   /* ← accent / links     ·  5.6:1 vs cream ✓ AA  */
+  --color-violet-100: #ECEAFE;
+
+  /* Per-project accent colors */
+  --color-project-1: #2D3566;   /* Conversational Finance — navy-purple  */
+  --color-project-2: #3730A3;   /* Design Systems         — deep violet  */
+  --color-project-3: #1B3D2B;   /* Risk Estimation        — forest green */
+  --color-project-4: #222222;   /* AI Monitoring          — near-black   */
+
+  /* Neutrals */
+  --color-white: #FFFFFF;
+  --color-black: #0D0D0D;
+}
+
+
+/* ------------------------------------------------------------
+   COLOR — Semantic Tokens
+   Use these in all component and layout styles.
+   ------------------------------------------------------------ */
+:root {
+  /* Surfaces */
+  --surface-page:       var(--color-cream-200);
+  --surface-subtle:     var(--color-cream-300);
+  --surface-card:       var(--color-white);
+  --surface-dark:       var(--color-navy-800);
+  --surface-overlay:    rgba(28, 36, 66, 0.55);
+
+  /* Text — all pass WCAG AA on --surface-page */
+  --text-primary:       var(--color-navy-800);   /* 12.0:1 — headlines, primary  */
+  --text-subhead:       var(--color-navy-600);   /*  6.9:1 — section headings    */
+  --text-body:          var(--color-navy-400);   /*  5.9:1 — paragraphs          */
+  --text-secondary:     var(--color-navy-500);   /*  4.6:1 — captions, metadata  */
+  --text-muted:         var(--color-navy-200);   /* decorative only — labels,    */
+                                                 /* numbers that repeat elsewhere */
+  --text-on-dark:       var(--color-cream-200);
+  --text-on-dark-muted: rgba(245, 240, 235, 0.60);
+
+  /* Interactive */
+  --text-link:          var(--color-violet-600);  /* 5.6:1 ✓ AA */
+  --text-link-hover:    var(--color-violet-700);
+
+  --accent:             var(--color-violet-600);
+  --accent-hover:       var(--color-violet-700);
+  --accent-subtle:      var(--color-violet-100);
+
+  /* Borders */
+  --border-default:     var(--color-navy-100);
+  --border-subtle:      rgba(28, 36, 66, 0.08);
+  --border-strong:      var(--color-navy-200);
+}
+
+
+/* ------------------------------------------------------------
+   TYPOGRAPHY — Font Family
+   Single family: Mulish Variable.
+   Hierarchy comes entirely from weight, not font switching.
+   ------------------------------------------------------------ */
+:root {
+  --font-sans:  'Mulish Variable', 'Mulish', system-ui, -apple-system, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+
+  /* Shorthand aliases — both point to the same family */
+  --font-display: var(--font-sans);
+  --font-body:    var(--font-sans);
+}
+
+
+/* ------------------------------------------------------------
+   TYPOGRAPHY — Weight Hierarchy
+   This is how you create hierarchy with a single font family.
+   Use these weight tokens instead of raw numbers.
+   ------------------------------------------------------------ */
+:root {
+  --weight-hero:     200;   /* Hero / splash headlines only — very light */
+  --weight-display:  300;   /* Section headlines, large text             */
+  --weight-normal:   400;   /* Body copy, subheadings, prose             */
+  --weight-ui:       600;   /* Card titles, nav, buttons, badges         */
+  --weight-label:    700;   /* Eyebrows, tags — used uppercase + tracked */
+}
+
+
+/* ------------------------------------------------------------
+   TYPOGRAPHY — Size Scale
+   Based on a 1.25 (Major Third) modular scale, 16px base.
+   ------------------------------------------------------------ */
+:root {
+  --text-xs:    0.75rem;    /*  12px */
+  --text-sm:    0.875rem;   /*  14px */
+  --text-base:  1rem;       /*  16px */
+  --text-lg:    1.125rem;   /*  18px */
+  --text-xl:    1.25rem;    /*  20px */
+  --text-2xl:   1.5rem;     /*  24px */
+  --text-3xl:   2rem;       /*  32px */
+  --text-4xl:   2.75rem;    /*  44px */
+  --text-5xl:   3.5rem;     /*  56px */
+  --text-6xl:   4.5rem;     /*  72px — hero splash only */
+}
+
+
+/* ------------------------------------------------------------
+   TYPOGRAPHY — Leading & Tracking
+   ------------------------------------------------------------ */
+:root {
+  --leading-tight:   1.15;   /* large headlines                    */
+  --leading-snug:    1.35;   /* subheadings                        */
+  --leading-normal:  1.6;    /* body text                          */
+  --leading-relaxed: 1.75;   /* long-form / case study prose       */
+
+  --tracking-tight:   -0.02em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.06em;
+  --tracking-widest:   0.12em;  /* eyebrows / uppercase labels */
+}
+
+
+/* ------------------------------------------------------------
+   SPACING
+   4px base grid. Use everywhere — padding, margin, gap.
+   ------------------------------------------------------------ */
+:root {
+  --space-1:   0.25rem;   /*   4px */
+  --space-2:   0.5rem;    /*   8px */
+  --space-3:   0.75rem;   /*  12px */
+  --space-4:   1rem;      /*  16px */
+  --space-5:   1.25rem;   /*  20px */
+  --space-6:   1.5rem;    /*  24px */
+  --space-8:   2rem;      /*  32px */
+  --space-10:  2.5rem;    /*  40px */
+  --space-12:  3rem;      /*  48px */
+  --space-16:  4rem;      /*  64px */
+  --space-20:  5rem;      /*  80px */
+  --space-24:  6rem;      /*  96px */
+  --space-32:  8rem;      /* 128px */
+  --space-40: 10rem;      /* 160px */
+}
+
+
+/* ------------------------------------------------------------
+   LAYOUT
+   ------------------------------------------------------------ */
+:root {
+  --max-w-text:     680px;   /* prose / case study body column */
+  --max-w-content:  900px;   /* project cards, mid-width       */
+  --max-w-wide:    1100px;   /* full-width sections            */
+  --max-w-full:    1440px;   /* site container max             */
+
+  --gutter:     var(--space-6);    /* page-edge padding, mobile  */
+  --gutter-md:  var(--space-12);   /* page-edge padding, desktop */
+}
+
+
+/* ------------------------------------------------------------
+   BORDER RADIUS
+   ------------------------------------------------------------ */
+:root {
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-2xl:  32px;
+  --radius-full: 9999px;
+}
+
+
+/* ------------------------------------------------------------
+   SHADOWS
+   Navy-tinted so they read warm against the cream background.
+   ------------------------------------------------------------ */
+:root {
+  --shadow-sm:  0 1px 4px   rgba(28, 36, 66, 0.07);
+  --shadow-md:  0 4px 16px  rgba(28, 36, 66, 0.09);
+  --shadow-lg:  0 8px 32px  rgba(28, 36, 66, 0.12);
+  --shadow-xl:  0 16px 48px rgba(28, 36, 66, 0.14);
+}
+
+
+/* ------------------------------------------------------------
+   TRANSITIONS
+   ------------------------------------------------------------ */
+:root {
+  --ease:         cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+
+  --duration-fast:    150ms;
+  --duration-base:    250ms;
+  --duration-slow:    400ms;
+  --duration-slower:  600ms;
+
+  --transition-fast:  var(--duration-fast)   var(--ease);
+  --transition-base:  var(--duration-base)   var(--ease);
+  --transition-slow:  var(--duration-slow)   var(--ease);
+}
+
+
+/* ------------------------------------------------------------
+   Z-INDEX SCALE
+   ------------------------------------------------------------ */
+:root {
+  --z-below:    -1;
+  --z-base:      0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+}
+
+
+/* ------------------------------------------------------------
+   GRID PATTERN UTILITIES
+   Optional — apply to any section, slide, or case study block.
+   Not used as a site-wide background.
+
+   Usage:
+     <section class="bg-grid-48"> ... </section>
+     <div class="bg-dot-36"> ... </div>
+
+   All patterns use the cream base + navy lines/dots at low
+   opacity so they never interfere with text contrast.
+   ------------------------------------------------------------ */
+
+/* Graph paper — 48px (architectural, subtle) */
+.bg-grid-48 {
+  background-color: var(--color-cream-200);
+  background-image:
+    linear-gradient(rgba(28, 36, 66, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 36, 66, 0.045) 1px, transparent 1px),
+    linear-gradient(rgba(28, 36, 66, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 36, 66, 0.018) 1px, transparent 1px);
+  background-size: 48px 48px, 48px 48px, 12px 12px, 12px 12px;
+}
+
+/* Graph paper — 28px (standard, more present) */
+.bg-grid-28 {
+  background-color: var(--color-cream-200);
+  background-image:
+    linear-gradient(rgba(28, 36, 66, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 36, 66, 0.055) 1px, transparent 1px),
+    linear-gradient(rgba(28, 36, 66, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 36, 66, 0.022) 1px, transparent 1px);
+  background-size: 28px 28px, 28px 28px, 7px 7px, 7px 7px;
+}
+
+/* Dot grid — 36px (drafting, spacious) */
+.bg-dot-36 {
+  background-color: var(--color-cream-200);
+  background-image: radial-gradient(
+    circle,
+    rgba(28, 36, 66, 0.12) 1.4px,
+    transparent 1.4px
+  );
+  background-size: 36px 36px;
+}
+
+/* Dot grid — 20px (notebook, warm texture) */
+.bg-dot-20 {
+  background-color: var(--color-cream-200);
+  background-image: radial-gradient(
+    circle,
+    rgba(28, 36, 66, 0.15) 1.2px,
+    transparent 1.2px
+  );
+  background-size: 20px 20px;
+}
+
+/* Dark card variant — grid on navy (for project hero slides) */
+.bg-grid-dark {
+  background-color: var(--color-navy-800);
+  background-image:
+    linear-gradient(rgba(245, 240, 235, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 240, 235, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
